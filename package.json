@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha ./test/tests/js"
+    "test": "mocha ./test/tests.js"
   },
   "keywords": [
     "finalbuilder"
