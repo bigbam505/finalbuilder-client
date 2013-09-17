@@ -1,6 +1,6 @@
 {
   "name": "finalbuilder-client",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "description": "Wrapper to the FinalBuilder API",
   "main": "./index.js",
   "directories": {
@@ -11,9 +11,9 @@
   "scripts": {
     "test": "mocha ./test/tests.js"
   },
-  "repository" : {
-    "type":"git",
-    "url":"https://github.com/bigbam505/finalbuilder-client.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigbam505/finalbuilder-client.git"
   },
   "keywords": [
     "finalbuilder"
