@@ -41,37 +41,37 @@ function FinalBuilderClient(options) {
   self.GetProjects = function(token, callback) {
     SoapClient(function(client){ 
       client.GetProjects({authenticationToken: token}, function(err, results){
-        if(!err && results && results.GetProjectsResult[0])
-          callback(results.GetProjectsResult[0].ProjectInformation);
+        if(!err && results && results.GetProjectsResult.ProjectInformation)
+          callback(null, results.GetProjectsResult.ProjectInformation);
         else
-          callback([]);
+          callback(err, []);
       });
     });
   }
 
   self.GetProject = function(token, projectName, callback){
-    self.GetProjects(token, function(projects){
+    self.GetProjects(token, function(err, projects){
+      var found = false;
       projects.forEach(function(project){
-        if(project.Name[0] == projectName){
+        if(project.Name == projectName){
           callback(null, project);
+          found = true;
           return;
         }
       });
 
-      callback(true, {});
+      if(!found)
+        callback(err, {});
     });
   }
 
   self.GetProjectGroup = function(token, projectGroup, callback){
-    self.GetProjects(token, function(projects){
+    self.GetProjects(token, function(err, projects){
       var projectsInGroup = [];
       projects.forEach(function(project){
-        project.Group.forEach(function(groupName){
-          if(groupName == projectGroup){
-            projectsInGroup.push(project)
-            return;
-          }
-        });
+        if(project.Group == projectGroup){
+          projectsInGroup.push(project)
+        }
       });
 
       callback(null, projectsInGroup);
