@@ -39,7 +39,7 @@ function FinalBuilderClient(options) {
   }
 
   self.GetProjects = function(token, callback) {
-    SoapClient(function(client){ 
+    SoapClient(function(client){
       client.GetProjects({authenticationToken: token}, function(err, results){
         if(!err && results && results.GetProjectsResult.ProjectInformation)
           callback(null, results.GetProjectsResult.ProjectInformation);
@@ -79,8 +79,19 @@ function FinalBuilderClient(options) {
   }
 
   self.BuildProject = function(token, projectName, callback){
-    SoapClient(function(client){ 
+    SoapClient(function(client){
       client.StartProject({'authenticationToken': token, 'name': projectName }, function(err, results){
+        if(!err)
+          callback(null, true);
+        else
+          callback(err, false);
+      });
+    });
+  }
+
+  self.StopProjectBuild = function(token, projectName, callback){
+    SoapClient(function(client){
+      client.StopProject({'authenticationToken': token, 'name': projectName }, function(err, results){
         if(!err)
           callback(null, true);
         else
