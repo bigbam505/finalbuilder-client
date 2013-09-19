@@ -19,7 +19,7 @@
     "finalbuilder"
   ],
   "dependencies": {
-    "soap": "git+ssh://git@github.com:milewise/node-soap.git#master"
+    "soap": "https://github.com/milewise/node-soap/tarball/master"
   },
   "devDependencies": {
     "mocha": "1.8.2",

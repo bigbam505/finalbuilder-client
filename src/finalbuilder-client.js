@@ -26,14 +26,15 @@ function FinalBuilderClient(options) {
 
   self.Authenticate = function(user, pass, callback){
     if(authorization_token){
-      callback(authorization_token);
+      callback(null, authorization_token);
       return;
     }
 
     SoapClient(function(client){
       client.Authenticate({'username': user, 'password': pass}, function(err, result){
-        authorization_token = result.AuthenticateResult;
-        callback(authorization_token);
+	    if(!err)
+		  authorization_token = result.AuthenticateResult;
+        callback(err, authorization_token);
       });
     });
   }
