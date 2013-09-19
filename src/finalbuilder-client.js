@@ -7,11 +7,12 @@ function FinalBuilderClient(options) {
   var self = {},
       api_endpoint = options.hostname+'/Services/FinalBuilderServer.asmx?WSDL',
       soap_client,
-      authorization_token;
+      authorization_token,
+      request_headers = options.requestOptions || {};
 
   function SoapClient(callback){
     if(!soap_client){
-      soap.createClient(api_endpoint, function(err, client) {
+      soap.createClient(api_endpoint, { wsdl_options: request_headers }, function(err, client) {
         if(err)
           throw new Error('WSDL Parse issue');
 
@@ -32,10 +33,10 @@ function FinalBuilderClient(options) {
 
     SoapClient(function(client){
       client.Authenticate({'username': user, 'password': pass}, function(err, result){
-	    if(!err)
-		  authorization_token = result.AuthenticateResult;
+	if(!err)
+	  authorization_token = result.AuthenticateResult;
         callback(err, authorization_token);
-      });
+      }, request_headers);
     });
   }
 
@@ -46,7 +47,7 @@ function FinalBuilderClient(options) {
           callback(null, results.GetProjectsResult.ProjectInformation);
         else
           callback(err, []);
-      });
+      }, request_headers);
     });
   }
 
@@ -63,7 +64,7 @@ function FinalBuilderClient(options) {
 
       if(!found)
         callback(err, {});
-    });
+    }, request_headers);
   }
 
   self.GetProjectGroup = function(token, projectGroup, callback){
@@ -76,28 +77,28 @@ function FinalBuilderClient(options) {
       });
 
       callback(null, projectsInGroup);
-    });
+    }, request_headers);
   }
 
   self.BuildProject = function(token, projectName, callback){
     SoapClient(function(client){
-      client.StartProject({'authenticationToken': token, 'name': projectName }, function(err, results){
+      client.StartProject({authenticationToken: token, name: projectName }, function(err, results){
         if(!err)
           callback(null, true);
         else
           callback(err, false);
-      });
+      }, request_headers);
     });
   }
 
   self.StopProjectBuild = function(token, projectName, callback){
     SoapClient(function(client){
-      client.StopProject({'authenticationToken': token, 'name': projectName }, function(err, results){
+      client.StopProject({authenticationToken: token, name: projectName }, function(err, results){
         if(!err)
           callback(null, true);
         else
           callback(err, false);
-      });
+      }, request_headers);
     });
   }
 
