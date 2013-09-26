@@ -40,6 +40,12 @@ client.Authenticate('username', 'password', function(token){
 
 ```
 
+Environmental Variables:
+```
+FINAL_BUILDER_USERNAME - authenticated user UserName
+FINAL_BUILDER_PASSWORD - authenticated user Password 
+```
+
 ### Issues
 Issues with this module can be added here: [Issues](https://github.com/bigbam505/finalbuilder-client/issues)
 
