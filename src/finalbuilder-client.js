@@ -1,4 +1,5 @@
-var soap = require('soap');
+var soap = require('soap'),
+	vars = process.env;
 
 module.exports = FinalBuilderClient
 
@@ -25,16 +26,27 @@ function FinalBuilderClient(options) {
     }
   }
 
-  self.Authenticate = function(user, pass, callback){
+  self.Authenticate = function(user, password, callback){
     if(authorization_token){
       callback(null, authorization_token);
       return;
     }
 
+    if(typeof(user) === 'function'){
+      callback = user,
+      user = null;
+    }
+    if(!user){
+      user = vars.FINAL_BUILDER_USERNAME;
+    }
+    if(!password){
+      password = vars.FINAL_BUILDER_PASSWORD;
+    }
+
     SoapClient(function(client){
-      client.Authenticate({'username': user, 'password': pass}, function(err, result){
-	if(!err)
-	  authorization_token = result.AuthenticateResult;
+      client.Authenticate({'username': user, 'password': password}, function(err, result){
+        if(!err)
+          authorization_token = result.AuthenticateResult;
         callback(err, authorization_token);
       }, request_headers);
     });
