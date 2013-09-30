@@ -21,19 +21,33 @@ npm install finalbuilder-client --save
 Sample Usage:
 ``` js
 var FinalBuilderClient = require('finalbuilder-client');
-var client = new FinalBuilderClient({hostname: 'http://server/'});
+var client = new FinalBuilderClient({ 
+    hostname: 'http://server/', 
+    requestOptions: { 
+      strictSSL: false 
+    }
+  });
 
-client.Authenticate('username', 'password', function(token){
-
+client.Authenticate('username', 'password', function(error, token){
+  if(error) return
+  
   client.GetProjects(token, function(err, projects){
-    //DO Something here
+    //DO Something here if projects are returned
   });
   
   client.GetProject(token, 'Project Name', function(err, project){
     //DO Something here if project is returned
   });
   
+  client.GetProjectGroup(token, 'Project Group Name', function(err, projects){
+    //DO Something here if projects are returned
+  });
+  
   client.BuildProject(token, 'Project Name', function(err, success){
+    //Success will be true if successful, or false if not
+  });
+  
+  client.StopProjectBuild(token, 'Project Name', function(err, success){
     //Success will be true if successful, or false if not
   });
 });
